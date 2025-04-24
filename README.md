@@ -29,13 +29,15 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; `
 [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; `
 iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
 
-# Docker & Docker Desktop
+---
+
+## Docker & Docker Desktop
 Windows: Download and install manually: https://www.docker.com/products/docker-desktop
 macOS: brew install --cask docker
 
+---
 kubectl (Kubernetes CLI)
 Windows: choco install kubernetes-cli -y
-
 macOS: brew install kubectl
 
 
