@@ -4,7 +4,7 @@ Set up your development environment on **Windows** or **macOS** using [Chocolate
 
 ---
 
-## 📋 Tools Included
+## 🧰 Prerequisite Installations
 
 - Docker & Docker Desktop
 - kubectl (Kubernetes CLI)
