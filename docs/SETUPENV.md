@@ -1,36 +1,59 @@
 ## 📦 Phase 1: Environment Setup & Argo CD Installation
 
-Objective: Set up our environment for GitOps!
+### Objective: Set up our environment for GitOps!
 
 ### Step 1: Generate SSH Key & Add to GitHub
 
--- Check for existing SSH keys:
+Check for existing SSH keys:
 Before you generate an SSH key, you can check to see if you have any existing SSH keys: [https://docs.github.com/en/authentication/connecting-to-github-with-ssh/checking-for-existing-ssh-keys]
 
-- Visit:
-  -- Setting up SSH-Agent in Windows
-  - [https://interworks.com/blog/2021/09/15/setting-up-ssh-agent-in-windows-for-passwordless-git-authentication/]
-  - [https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent?platform=windows]
-    -- Setting up SSH-Agent in MacOS:
-  - [https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent?platform=mac]
+Visit:
+Setting up SSH-Agent in Windows
+
+- [https://interworks.com/blog/2021/09/15/setting-up-ssh-agent-in-windows-for-passwordless-git-authentication/]
+- [https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent?platform=windows]
+  Setting up SSH-Agent in MacOS:
+- [https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent?platform=mac]
+
+Windows (PowerShell - Run in Admin)
+Installation:
+
+```bash
+Get-Service ssh-agent | Set-Service -StartupType Automatic -PassThru | Start-Service
+```
+
+Avoid restarting your system:
+
+```bash
+start-ssh-agent.cmd
+```
+
+Set up SSH Key Pair to Access a Git Remote Provider:
 
 ```bash
 ssh-keygen -t ed25519 -C "your_primary_email_in_GitHub@example.com"
 # Copy the contents of ~/.ssh/id_ed25519.pub to GitHub under Settings > SSH and GPG keys
-```
 
-```bash
-ssh-keygen -t ed25519 -C "your_primary_email_in_GitHub@example.com"
-# Copy the contents of ~/.ssh/id_ed25519.pub to GitHub under Settings > SSH and GPG keys
-```
+Enter file in which to save the key (C:\Users\name/.ssh/id_ed25519): C:\Users\name/.ssh/id_ed25519
 
--Enter file in which to save the key (C:\Users\name/.ssh/id_ed25519): C:\Users\name/.ssh/id_ed25519
+```
 
 - Leave password blank → Click Enter
 - You will then be shown the key’s randomart image to confirm creation
-- Copy the contents of the public key to your clipboard. You can read this key with the following command: cat path\to\ssh\key.pub
-  -- (For example: cat C:\Users\chastie\.ssh\id_ed25519_git_demo.pub)
-  -- Copy the ENTIRE provided ssh key to paste to Github, including your email
+- Copy the contents of the public key to your clipboard. You can read this key with the following command:
+
+```bash
+cat path\to\ssh\key.pub
+# For example: cat C:\Users\chastie\.ssh\id_ed25519.pub
+```
+
+Output: Copy the ENTIRE provided ssh key to paste to Github, including your email
+
+```bash
+ssh-ed25519-XXXXXXXXXXXXXXXXXXXXXXX your-git-email@email.com
+```
+
+Add SSH Key to GitHub
 
 - Open your GitHub Account
 - Click on your Profile Icon
@@ -57,9 +80,13 @@ kind create cluster --name argocd-demo
 ### Step 4: Configure K8s Context
 
 ```bash
+cat ~/.kube/config
+
 kubectl config use-context kind-argocd-demo
-# Windows
+
+# Windows (Run in Admin)
 set KUBE_CONFIG="~/.kube/config"
+
 # macOS/Linux
 export KUBE_CONFIG="~/.kube/config"
 ```
@@ -99,13 +126,14 @@ terraform apply
 - Visit: [http://localhost:8080](http://localhost:8080)
 - Username: `admin`
 - Password:
-  -- Option 1:
 
-  - Go to OpenLens
-  - Config → Secrets → argocd-initial-admin-secret
-  - password box → expose password
+Option 1:
 
-  -- Option 2:
+- Go to OpenLens
+- Config → Secrets → argocd-initial-admin-secret
+- password box → expose password
+
+Option 2:
 
 ```bash
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
@@ -113,6 +141,6 @@ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.pas
 
 - Login to ArgoCD
 
-# Phase 1 Complete! We successfully set up our enviroment for GitOps!
+### Phase 1 Complete! We successfully set up our environment for GitOps!
 
 ---
