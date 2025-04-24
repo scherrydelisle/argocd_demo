@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: kubernetes-addons
+  namespace: argocd
+spec:
+  generators:
+    - git:
+        repoURL: #Add kubernetes-addons Git URL
+        revision: main
+        directories:
+          - path: "addons/*"
+  template:
+    metadata:
+      name: "{{path.basename}}"
+    spec:
+      project: default
+      source:
+        repoURL: #Add kubernetes-addons Git URL
+        targetRevision: main
+        path: "{{path}}"
+        helm:
+          releaseName: "{{path.basename}}"
+          valueFiles:
+            - values.yaml
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: default
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
