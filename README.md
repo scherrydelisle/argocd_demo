@@ -4,7 +4,7 @@ This repository walks you through the setup and deployment of Argo CD in a local
 
 ## 📂 Documentation
 
-- [Pre-requisite Installations](./docs/PREREQ_INSTALLATIONS.md)
+- [Pre-requisite Installations](./docs/INSTALLATIONS.md)
 - [Phase 1: Let's set up your environment!](./docs/SETUP_ENV.md)
 - [Phase 2: Let's Deploy!](./docs/DEPLOY.md)
 
